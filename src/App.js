@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CheckCircle, Users, Mail } from "lucide-react";
+import { CheckCircle, Users } from "lucide-react";
 
 export default function AgentFlowLandingPage() {
   return (
@@ -17,7 +17,10 @@ export default function AgentFlowLandingPage() {
         <p className="mt-4 text-lg text-gray-700 max-w-2xl mx-auto">
           AgentFlow builds smart, custom AI tools for real estate agents. We help you write listings, create content, and respond to clients faster — without lifting a finger.
         </p>
-        <a href="#get-started" className="inline-block mt-8 bg-blue-600 text-white px-8 py-3 rounded-full text-lg hover:bg-blue-700 transition">
+        <a
+          href="#get-started"
+          className="inline-block mt-8 bg-blue-600 text-white px-8 py-3 rounded-full text-lg hover:bg-blue-700 transition"
+        >
           Get Started
         </a>
       </motion.section>
@@ -70,7 +73,7 @@ export default function AgentFlowLandingPage() {
 
       <motion.section
         id="get-started"
-        className="w-full max-w-xl text-center"
+        className="w-full max-w-2xl text-center"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -79,9 +82,16 @@ export default function AgentFlowLandingPage() {
         <p className="text-lg text-gray-600 mb-6">
           We’ll show you how AgentFlow works in under 10 minutes. No pressure, just magic.
         </p>
-        <a href="mailto:hello@agentflow.ai" className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-full text-lg hover:bg-blue-700 transition">
-          <Mail size={20} /> Book a Free Demo
-        </a>
+        <div className="w-full h-[600px] shadow-xl rounded-xl overflow-hidden">
+          <iframe
+            src="https://tally.so/r/wogGqb"
+            width="100%"
+            height="100%"
+            title="AgentFlow Demo Request Form"
+            frameBorder="0"
+            allow="fullscreen"
+          ></iframe>
+        </div>
       </motion.section>
 
       <footer className="mt-32 text-center text-gray-400 text-sm">
