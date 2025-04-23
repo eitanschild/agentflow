@@ -1,3 +1,4 @@
+import AgentFlowDemo from "./AgentFlowDemo";
 import { motion } from "framer-motion";
 import { CheckCircle, Users } from "lucide-react";
 
@@ -93,6 +94,8 @@ export default function AgentFlowLandingPage() {
           ></iframe>
         </div>
       </motion.section>
+
+      <AgentFlowDemo />
 
       <footer className="mt-32 text-center text-gray-400 text-sm">
         © 2025 AgentFlow. Built by Mo & Tantan with 🖤
