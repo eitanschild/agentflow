@@ -6,33 +6,25 @@ export default function AgentFlowDemo() {
   const [output, setOutput] = useState(null);
   const [error, setError] = useState(null);
 
-  const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
-
   async function generateCopy() {
     if (!input.trim()) return;
-
-    if (!apiKey) {
-      setError("Missing OpenAI API key. Check your .env file.");
-      return;
-    }
 
     setLoading(true);
     setOutput(null);
     setError(null);
 
     try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      const response = await fetch("https://github.com/eitanschild/agentflow1.git", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          model: "gpt-3.5-turbo",
           messages: [
             {
               role: "system",
-              content: "You are a real estate AI assistant. When given a short property description, return:\n\n1. Listing Description\n2. Instagram Caption\n3. Email Subject Line",
+              content:
+                "You are a real estate AI assistant. When given a short property description, return:\n\n1. Listing Description\n2. Instagram Caption\n3. Email Subject Line",
             },
             {
               role: "user",
@@ -43,18 +35,18 @@ export default function AgentFlowDemo() {
       });
 
       const data = await response.json();
-      console.log("OpenAI response:", data);
+      console.log("Backend GPT response:", data);
 
       if (data.error) {
-        setError("OpenAI error: " + data.error.message);
-      } else if (data?.choices?.[0]?.message?.content) {
-        setOutput(data.choices[0].message.content);
+        setError("AI error: " + data.error.message);
+      } else if (data?.content) {
+        setOutput(data.content);
       } else {
-        setError("OpenAI returned an unexpected response.");
+        setError("Unexpected AI response.");
       }
     } catch (err) {
       console.error("Fetch error:", err);
-      setError("Failed to connect to OpenAI API.");
+      setError("Failed to connect to backend.");
     } finally {
       setLoading(false);
     }
