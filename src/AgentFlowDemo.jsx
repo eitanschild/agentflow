@@ -14,7 +14,7 @@ export default function AgentFlowDemo() {
     setError(null);
 
     try {
-      const response = await fetch("https://github.com/eitanschild/agentflow1.git", {
+      const response = await fetch("https://agentflow1-production.up.railway.app/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
