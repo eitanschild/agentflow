@@ -40,9 +40,7 @@ export default function AgentFlowDemo() {
         const parsed = JSON.parse(data.content); // assumes GPT returns JSON
         setOutputs((prev) => ({
           ...prev,
-          ...(targetField
-            ? { [targetField]: parsed[targetField] }
-            : parsed),
+          ...(targetField ? { [targetField]: parsed[targetField] } : parsed),
         }));
       } else {
         setError("Unexpected AI response.");
@@ -60,15 +58,15 @@ export default function AgentFlowDemo() {
   };
 
   return (
-    <section className="w-full max-w-2xl text-center py-12">
-      <h2 className="text-3xl font-bold mb-4">Try the AgentFlow Demo</h2>
-      <p className="text-gray-600 mb-6">
+    <section className="w-full max-w-3xl text-center py-16 px-4 mx-auto">
+      <h2 className="text-4xl font-bold mb-6">Try the AgentFlow Demo</h2>
+      <p className="text-gray-600 mb-10 text-lg">
         Describe a property and let AI generate editable content for you.
       </p>
 
       <textarea
-        rows={4}
-        className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none mb-4"
+        rows={5}
+        className="w-full p-5 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none text-base shadow mb-6"
         placeholder="e.g. 3BR modern apartment in Tel Aviv with rooftop and sea views"
         value={input}
         onChange={(e) => setInput(e.target.value)}
@@ -76,7 +74,7 @@ export default function AgentFlowDemo() {
 
       <button
         onClick={() => fetchAIResult()}
-        className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition mb-6 flex items-center justify-center gap-2"
+        className="bg-blue-600 text-white px-8 py-4 rounded-2xl hover:bg-blue-700 text-lg font-semibold shadow-md transition mb-8 flex items-center justify-center gap-2"
         disabled={loading}
       >
         {loading ? (
@@ -109,19 +107,23 @@ export default function AgentFlowDemo() {
       </button>
 
       {error && (
-        <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-4 shadow">
+        <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-6 shadow">
           ⚠️ {error}
         </div>
       )}
 
       {["listing", "caption", "subject"].map((field) => (
-        <div key={field} className="mb-6 text-left">
-          <label className="block font-semibold capitalize mb-1">
-            {field === "caption" ? "Instagram Caption" : field === "subject" ? "Email Subject Line" : "Listing Description"}
+        <div key={field} className="mb-8 text-left">
+          <label className="block font-bold capitalize mb-2 text-gray-700 text-lg">
+            {field === "caption"
+              ? "Instagram Caption"
+              : field === "subject"
+              ? "Email Subject Line"
+              : "Listing Description"}
           </label>
           <textarea
-            rows={field === "listing" ? 5 : 2}
-            className="w-full p-4 border rounded-xl border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+            rows={field === "listing" ? 5 : 3}
+            className="w-full p-5 border rounded-2xl border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none text-base shadow"
             value={outputs[field]}
             onChange={(e) =>
               setOutputs((prev) => ({ ...prev, [field]: e.target.value }))
