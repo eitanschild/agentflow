@@ -1,10 +1,16 @@
+import { useEffect } from "react";
 import AgentFlowDemo from "./AgentFlowDemo";
 import { motion } from "framer-motion";
 import { CheckCircle, Users } from "lucide-react";
 
-export default function AgentFlowLandingPage() {
+export default function App() {
+  useEffect(() => {
+    document.documentElement.style.scrollBehavior = "smooth";
+  }, []);
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-white to-gray-100 text-gray-900 p-6 md:p-12 flex flex-col items-center">
+      {/* Hero Section */}
       <motion.section
         className="w-full max-w-5xl text-center mb-20"
         initial={{ opacity: 0, y: -20 }}
@@ -26,6 +32,7 @@ export default function AgentFlowLandingPage() {
         </a>
       </motion.section>
 
+      {/* Features Section */}
       <section className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-12 mb-24">
         <motion.div
           initial={{ opacity: 0, x: -30 }}
@@ -72,6 +79,7 @@ export default function AgentFlowLandingPage() {
         </motion.div>
       </section>
 
+      {/* Demo Section */}
       <motion.section
         id="get-started"
         className="w-full max-w-2xl text-center"
@@ -83,20 +91,10 @@ export default function AgentFlowLandingPage() {
         <p className="text-lg text-gray-600 mb-6">
           We’ll show you how AgentFlow works in under 10 minutes. No pressure, just magic.
         </p>
-        <div className="w-full h-[600px] shadow-xl rounded-xl overflow-hidden">
-          <iframe
-            src="https://tally.so/r/wogGqb"
-            width="100%"
-            height="100%"
-            title="AgentFlow Demo Request Form"
-            frameBorder="0"
-            allow="fullscreen"
-          ></iframe>
-        </div>
+        <AgentFlowDemo />
       </motion.section>
 
-      <AgentFlowDemo />
-
+      {/* Footer */}
       <footer className="mt-32 text-center text-gray-400 text-sm">
         © 2025 AgentFlow. Built by Mo & Tantan with 🖤
       </footer>
