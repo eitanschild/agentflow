@@ -3,14 +3,17 @@ import { useState } from "react";
 export default function AgentFlowDemo() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [output, setOutput] = useState(null);
   const [error, setError] = useState(null);
+  const [outputs, setOutputs] = useState({
+    listing: "",
+    caption: "",
+    subject: "",
+  });
 
-  async function generateCopy() {
-    if (!input.trim()) return;
+  async function fetchAIResult(customInput = input, targetField = null) {
+    if (!customInput.trim()) return;
 
     setLoading(true);
-    setOutput(null);
     setError(null);
 
     try {
@@ -22,25 +25,25 @@ export default function AgentFlowDemo() {
         body: JSON.stringify({
           messages: [
             {
-              role: "system",
-              content:
-                "You are a real estate AI assistant. When given a short property description, return:\n\n1. Listing Description\n2. Instagram Caption\n3. Email Subject Line",
-            },
-            {
               role: "user",
-              content: input,
+              content: customInput,
             },
           ],
         }),
       });
 
       const data = await response.json();
-      console.log("Backend GPT response:", data);
 
       if (data.error) {
         setError("AI error: " + (data.error.message || data.error));
       } else if (data?.content) {
-        setOutput(data.content);
+        const parsed = JSON.parse(data.content); // assumes GPT returns JSON
+        setOutputs((prev) => ({
+          ...prev,
+          ...(targetField
+            ? { [targetField]: parsed[targetField] }
+            : parsed),
+        }));
       } else {
         setError("Unexpected AI response.");
       }
@@ -52,11 +55,15 @@ export default function AgentFlowDemo() {
     }
   }
 
+  const handleRegenerate = (field) => {
+    fetchAIResult(input, field);
+  };
+
   return (
     <section className="w-full max-w-2xl text-center py-12">
       <h2 className="text-3xl font-bold mb-4">Try the AgentFlow Demo</h2>
       <p className="text-gray-600 mb-6">
-        Describe a property and let AI write the listing, caption, and subject line.
+        Describe a property and let AI generate editable content for you.
       </p>
 
       <textarea
@@ -68,7 +75,7 @@ export default function AgentFlowDemo() {
       />
 
       <button
-        onClick={generateCopy}
+        onClick={() => fetchAIResult()}
         className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition mb-6 flex items-center justify-center gap-2"
         disabled={loading}
       >
@@ -97,7 +104,7 @@ export default function AgentFlowDemo() {
             Generating...
           </>
         ) : (
-          "Generate"
+          "Generate All"
         )}
       </button>
 
@@ -107,11 +114,28 @@ export default function AgentFlowDemo() {
         </div>
       )}
 
-      {output && (
-        <div className="text-left bg-white p-6 rounded-xl shadow-md space-y-4 text-gray-800 whitespace-pre-wrap">
-          {output}
+      {["listing", "caption", "subject"].map((field) => (
+        <div key={field} className="mb-6 text-left">
+          <label className="block font-semibold capitalize mb-1">
+            {field === "caption" ? "Instagram Caption" : field === "subject" ? "Email Subject Line" : "Listing Description"}
+          </label>
+          <textarea
+            rows={field === "listing" ? 5 : 2}
+            className="w-full p-4 border rounded-xl border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+            value={outputs[field]}
+            onChange={(e) =>
+              setOutputs((prev) => ({ ...prev, [field]: e.target.value }))
+            }
+          />
+          <button
+            onClick={() => handleRegenerate(field)}
+            className="mt-2 text-sm text-blue-600 hover:underline"
+            disabled={loading}
+          >
+            Regenerate
+          </button>
         </div>
-      )}
+      ))}
     </section>
   );
 }
